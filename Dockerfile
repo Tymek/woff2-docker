@@ -9,15 +9,20 @@ RUN git clone --recursive https://github.com/google/woff2.git --depth 1 \
 
 RUN echo -e "\
 #!/bin/sh
-wget https://fonts.google.com/download?family=\$1 -O /tmp/archive.zip >&2\n\
-unzip /tmp/archive.zip -d /tmp/font >&2\n\
+echo \"\$1\" \
+| sed -e 's/ /%20/' \
+| xargs printf https://fonts.google.com/download?family=%s \
+| xargs wget -O /tmp/archive.zip >&2 \
+\n\
+unzip /tmp/archive.zip -d /tmp/font >&2 \
+\n\
 ls /tmp/font \
 | grep VariableFont \
-| xargs printf "/tmp/font/%s" \
+| xargs printf /tmp/font/%s \
 | xargs woff2_compress \
 | tee /dev/stderr \
-| sed 's/.*=> //' \
-| xargs cat\n\
+| sed 's/.*=> //' | xargs -I{} cp {} \$(echo \"\$1\" | awk '{print tolower(\$0)}' | sed 's/ /-/').woff2 \
+\n\
 rm -rf /tmp/*\
 " > /usr/bin/ggfont \
 && chmod +x /usr/bin/ggfont
