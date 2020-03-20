@@ -14,6 +14,6 @@ installed in `/usr/bin/`.
 
 As a bonus I included `wget`, `zip` and a script for generating variable fonts from Google Fonts. Source in `/usr/bin/ggfont`. No warranty for this part! Example use case: 
 ``` sh
-docker run scrlk/woff2 sh -c "ggfont Roboto%20Slab" > roboto-slab.woff2
-docker run scrlk/woff2 sh -c "ggfont Spartan" > spartan.woff2
+sudo docker run -it -v ${PWD}:/srv -w /srv scrlk/woff2 sh -c "ggfont \"Roboto Slab\""
+sudo docker run -it -v ${PWD}:/srv -w /srv scrlk/woff2 sh -c "ggfont Spartan"
 ````
