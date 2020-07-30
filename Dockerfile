@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk add --no-cache git make g++ wget unzip
+RUN apk add --no-cache git make g++ wget unzip bash
 
 RUN git clone --recursive https://github.com/google/woff2.git --depth 1 \
   && (cd woff2 && make clean all) \
